@@ -1,20 +1,42 @@
-# Static Web Server with Node.js
+# Static Web Server with Streams & Video Support
 
-Un semplice server web statico realizzato con Node.js, che serve file HTML, CSS, JavaScript e immagini in modo asincrono.
+Un server web statico realizzato con Node.js puro che utilizza gli stream per servire file in modo efficiente, incluso il supporto per video.
 
-## Caratteristiche
+## 🚀 Caratteristiche
 
-- Servizio di file statici (HTML, CSS, JS, immagini)
-- Gestione automatica delle estensioni dei file
-- Supporto per URL senza estensione (es. `/pippo` -> `pippo.html`)
-- Completamente asincrono con async/await
-- Gestione errori 404
+- Servizio file statici (HTML, CSS, JS, immagini, video)
+- Gestione URL senza estensione (`/pippo` → `pippo.html`)
+- Utilizzo di stream per trasferimenti efficienti
+- Supporto video MP4 e WebM
+- Organizzazione in cartelle dedicate
+- Gestione errori 404 e 415
 
-## Utilizzo
+## 📁 Struttura
 
-1. Clona il repository
-2. Installa Node.js
-3. Avvia il server con `node server.js`
-4. Apri il browser su `http://localhost:8080`
+project/
+├── server.js
+├── html/
+│ ├── index.html
+│ └── pippo.html
+├── css/
+│ └── style.css
+├── js/
+│ └── script.js
+├── img/
+│ └── img.png
+└── video/
+└── example.mp4
+text
 
 
+## 🛠️ Installazione & Utilizzo
+
+```bash
+# Clona il repository
+git clone https://github.com/tuo-username/static-server-streams.git
+
+# Entra nella cartella
+cd static-server-streams
+
+# Avvia il server
+node server.js

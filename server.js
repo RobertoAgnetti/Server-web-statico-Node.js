@@ -1,5 +1,5 @@
 const http = require('http');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 
 const hostname = 'localhost';
@@ -9,11 +9,11 @@ const fileTypes = {
     '.html': { folder: 'html', type: 'text/html' },
     '.css': { folder: 'css', type: 'text/css' },
     '.js': { folder: 'js', type: 'application/javascript' },
-    '.jpg': { folder: 'img', type: 'image/jpeg' },
-    '.png': { folder: 'img', type: 'image/png' }
+    '.png': { folder: 'img', type: 'image/png' },
+    '.mp4': { folder: 'video', type: 'video/mp4' },
 };
 
-async function handleRequest(req, res) {
+const server = http.createServer((req, res) => {
     try {
         let filePath = req.url;
         let ext = path.extname(filePath);
@@ -29,25 +29,39 @@ async function handleRequest(req, res) {
         }
         
         if (!fileTypes[ext]) {
-            res.writeHead(404);
-            res.end('404 - File type not supported');
+            res.writeHead(415, { 'Content-Type': 'text/html' });
+            res.end('<h1>415 - Tipo file non supportato</h1>');
             return;
         }
 
         const folder = fileTypes[ext].folder;
-        const fullPath = path.join(__dirname, folder, filePath);
+        const fullPath = path.join(__dirname, folder, path.basename(filePath));
         
-        const data = await fs.readFile(fullPath);
-        res.writeHead(200, { 'Content-Type': fileTypes[ext].type });
-        res.end(data);
+        // Verifica se il file esiste
+        fs.access(fullPath, fs.constants.F_OK, (err) => {
+            if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                res.end('<h1>404 - File non trovato</h1>');
+                return;
+            }
+
+            // Utilizza stream per leggere e inviare il file
+            const stream = fs.createReadStream(fullPath);
+            
+            stream.on('error', (error) => {
+                res.writeHead(500, { 'Content-Type': 'text/html' });
+                res.end('<h1>500 - Errore interno del server</h1>');
+            });
+            
+            res.writeHead(200, { 'Content-Type': fileTypes[ext].type });
+            stream.pipe(res);
+        });
         
     } catch (error) {
-        res.writeHead(404);
-        res.end('404 - File not found');
+        res.writeHead(500, { 'Content-Type': 'text/html' });
+        res.end('<h1>500 - Errore interno del server</h1>');
     }
-}
-
-const server = http.createServer(handleRequest);
+});
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
