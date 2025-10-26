@@ -1,4 +1,4 @@
-# Static Web Server with Streams & Video Support
+# Server web statico Node.js con stream e supporto video
 
 Un server web statico realizzato con Node.js puro che utilizza gli stream per servire file in modo efficiente, incluso il supporto per video.
 
@@ -7,27 +7,9 @@ Un server web statico realizzato con Node.js puro che utilizza gli stream per se
 - Servizio file statici (HTML, CSS, JS, immagini, video)
 - Gestione URL senza estensione (`/pippo` → `pippo.html`)
 - Utilizzo di stream per trasferimenti efficienti
-- Supporto video MP4 e WebM
+- Supporto video MP4 
 - Organizzazione in cartelle dedicate
-- Gestione errori 404 e 415
-
-## 📁 Struttura
-
-project/
-├── server.js
-├── html/
-│ ├── index.html
-│ └── pippo.html
-├── css/
-│ └── style.css
-├── js/
-│ └── script.js
-├── img/
-│ └── img.png
-└── video/
-└── example.mp4
-text
-
+- Gestione errori 
 
 ## 🛠️ Installazione & Utilizzo
 
